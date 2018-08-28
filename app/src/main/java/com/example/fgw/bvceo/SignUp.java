@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -51,6 +52,12 @@ public class SignUp extends AppCompatActivity {
 
     @BindView(R.id.signup)
     ImageView signup;
+
+    @BindView(R.id.checkBox)
+    CheckBox students;
+
+    @BindView(R.id.checkBoxa)
+    CheckBox teachers;
 
     @BindView(R.id.already)
     TextView already;
@@ -113,13 +120,30 @@ public class SignUp extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressBar.setVisibility (View.GONE);
                 if(task.isSuccessful ())
+                {   if(teachers.isChecked())
                 {
-                    databaseReference.child(user).setValue (email);
-
-                    Intent intent = new Intent (SignUp.this, Main3Activity.class);
+                    login_details_email login = new login_details_email(email,teachers.getText().toString());
+                    databaseReference.child(user).setValue (login);
+//                    if(teachers.isChecked())
+                    {Intent intent = new Intent (SignUp.this, TeacherProfile.class);
                     intent .addFlags (intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity (intent);
+                    startActivity (intent);}
+//                    else{
+//                        startActivity(new Intent(SignUp.this,Main3Activity.class));
+//                    }
+                    Toast.makeText (getApplicationContext (),"You registered successfully",Toast.LENGTH_SHORT).show ();}
+                  else if(students.isChecked()){
+                    login_details_email login = new login_details_email(email,students.getText().toString());
+                    databaseReference.child(user).setValue (login);
+//                    if(teachers.isChecked())
+//                    {Intent intent = new Intent (SignUp.this, TeacherProfile.class);
+//                        intent .addFlags (intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        startActivity (intent);}
+//                    else{
+                        startActivity(new Intent(SignUp.this,Main3Activity.class));
+//                    }
                     Toast.makeText (getApplicationContext (),"You registered successfully",Toast.LENGTH_SHORT).show ();
+                }
                 }
                 else {
                     if (task.getException ( ) instanceof FirebaseAuthUserCollisionException) {

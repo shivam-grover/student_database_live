@@ -21,7 +21,8 @@
             android:label="@string/title_activity_main2"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Main3Activity" />
-        <activity android:name=".SignUp"></activity>
+        <activity android:name=".SignUp" />
+        <activity android:name=".TeacherProfile"></activity>
     </application>
 
 </manifest>

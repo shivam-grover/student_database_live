@@ -137,10 +137,14 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(dataSnapshot!=null){
-                        String userId = dataSnapshot.getValue(String.class);
-                        Toast.makeText (getApplicationContext (), userId,Toast.LENGTH_SHORT).show ();
+                        String userID= dataSnapshot.child("email").getValue().toString();
+                        final String typr= dataSnapshot.child("typel").getValue().toString();
 
-                        mAuth.signInWithEmailAndPassword (userId,PassWord).addOnCompleteListener (new OnCompleteListener<AuthResult>( ) {
+
+
+                        Toast.makeText (getApplicationContext (), typr,Toast.LENGTH_SHORT).show ();
+
+                        mAuth.signInWithEmailAndPassword (userID,PassWord).addOnCompleteListener (new OnCompleteListener<AuthResult>( ) {
 
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -150,12 +154,15 @@ public class MainActivity extends AppCompatActivity {
                                 if (task.isSuccessful ())
                                 {
                                     //if login is successful then
-
-                                    Intent intent = new Intent (MainActivity.this, Main3Activity.class);
-                                    intent .addFlags (intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity (intent);
-                                    Toast.makeText (getApplicationContext (),"log in",Toast.LENGTH_SHORT).show ();
-
+                                    if(typr.equals("Teacher")) {
+                                        Intent intent = new Intent(MainActivity.this, TeacherProfile.class);
+                                        intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                        Toast.makeText(getApplicationContext(), "log in", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else {
+                                        startActivity(new Intent(MainActivity.this, Main3Activity.class));
+                                    }
                                 }else
                                 {
                                     //else
